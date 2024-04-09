@@ -12,11 +12,14 @@ namespace Inventory
         
         [SerializeField] private Text _nameField;
         [SerializeField] private Image _icon;
+        [SerializeField] private int _rarity;
+        [SerializeField] private int _flag;
 
         private Transform _draggingParent;
         private Transform _originalgParent;
         private RectTransform _rectTransform;
-        [SerializeField] private GameObject _infoPanel;
+        private GameObject _infoPanel;
+        private bool _isShowInfo;
         
         private bool In(RectTransform originalParent)
         {
@@ -27,14 +30,18 @@ namespace Inventory
         {
             _nameField.text = item.ItemID;
             _icon.sprite = item.UIIcon;
+            _rarity = item.Rarity;
+            _flag = item.Flag;
+            transform.localScale = new Vector3(0.5f, 0.5f, 1);
         }
 
-        public void Init(Transform draggingParent, GameObject infoPanel)
+        public void Init(Transform draggingParent, GameObject infoPanel, bool isShowInfo)
         {
             _draggingParent = draggingParent;
             _originalgParent = transform.parent;
             _rectTransform = GetComponent<RectTransform>();
             _infoPanel = infoPanel;
+            _isShowInfo = isShowInfo;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -86,14 +93,16 @@ namespace Inventory
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _infoPanel.SetActive(true);
-            Debug.Log("Mouse enter");
+            if (_isShowInfo)
+            {
+                _infoPanel.SetActive(true);
+                InfoPanel _component = _infoPanel.GetComponent<InfoPanel>();
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _infoPanel.SetActive(false);
-            Debug.Log("Mouse exit");
         }
     }
 }
