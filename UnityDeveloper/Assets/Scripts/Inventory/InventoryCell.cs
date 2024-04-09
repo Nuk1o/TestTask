@@ -14,11 +14,13 @@ namespace Inventory
         [SerializeField] private Image _icon;
         [SerializeField] private int _rarity;
         [SerializeField] private int _flag;
+        [SerializeField] private Image _cellImage;
 
         private Transform _draggingParent;
         private Transform _originalgParent;
         private RectTransform _rectTransform;
         private GameObject _infoPanel;
+        private InfoPanel _info;
         private bool _isShowInfo;
         
         private bool In(RectTransform originalParent)
@@ -32,7 +34,27 @@ namespace Inventory
             _icon.sprite = item.UIIcon;
             _rarity = item.Rarity;
             _flag = item.Flag;
-            transform.localScale = new Vector3(0.5f, 0.5f, 1);
+            transform.GetChild(0).localScale = new Vector3(0.5f, 0.5f, 1);
+            SetRarityColor();
+        }
+
+        private void SetRarityColor()
+        {
+            switch (_rarity)
+            {
+                case 1:
+                    _cellImage.color = Color.blue; 
+                    break;
+                case 2:
+                    _cellImage.color = Color.red;
+                    break;
+                case 3:
+                    _cellImage.color = Color.yellow;
+                    break;
+                default:
+                    _cellImage.color = Color.gray;
+                    break;
+            }
         }
 
         public void Init(Transform draggingParent, GameObject infoPanel, bool isShowInfo)
@@ -42,6 +64,7 @@ namespace Inventory
             _rectTransform = GetComponent<RectTransform>();
             _infoPanel = infoPanel;
             _isShowInfo = isShowInfo;
+            _info = _infoPanel.GetComponent<InfoPanel>();
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -95,6 +118,7 @@ namespace Inventory
         {
             if (_isShowInfo)
             {
+                _info.SetValues(_nameField.text,_rarity);
                 _infoPanel.SetActive(true);
                 InfoPanel _component = _infoPanel.GetComponent<InfoPanel>();
             }

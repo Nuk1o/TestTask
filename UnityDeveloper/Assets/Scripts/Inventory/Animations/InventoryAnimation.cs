@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Runtime = Wigro.Runtime;
@@ -34,9 +35,9 @@ namespace Inventory.Animations
             Debug.Log(settings.CloseAnimated);
             _inventoryCanvas.gameObject.SetActive(true);
             _inventoryAnimator.enabled = true;
+            _openInventoryBtn.interactable = false;
             if (settings.OpenAnimated)
             {
-                _openInventoryBtn.interactable = false;
                 _inventoryAnimator.SetBool("OpenAnimated",true);
                 _inventoryAnimator.SetBool("CloseAnimated",false);
                 _inventoryAnimator.SetBool("isOpen",true);
@@ -51,9 +52,9 @@ namespace Inventory.Animations
         private void CloseAnimationInventoy()
         {
             _inventoryAnimator.enabled = true;
+            _openInventoryBtn.interactable = true;
             if (settings.CloseAnimated)
             {
-                _openInventoryBtn.interactable = true;
                 _inventoryAnimator.SetBool("isOpen",false);
                 _inventoryAnimator.SetBool("CloseAnimated",true);
                 _inventoryAnimator.SetBool("OpenAnimated",false);
@@ -62,6 +63,7 @@ namespace Inventory.Animations
             {
                 _inventoryAnimator.enabled = false;
                 _background.anchoredPosition = new Vector2(0, -1000);
+                _inventoryCanvas.gameObject.SetActive(false);
             }
         }
     }

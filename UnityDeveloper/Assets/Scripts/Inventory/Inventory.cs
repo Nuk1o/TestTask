@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Inventory.Items;
 using UnityEditor;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace Inventory
             }
             
             Random rnd = new Random();
-            for (int i = 1; i < _settings.amount; i++)
+            for (int i = 1; i <= _settings.amount; i++)
             {
                 ItemAsset _item = new ItemAsset();
                 _item.ItemID = DatabaseReader.itemsID[i - 1];

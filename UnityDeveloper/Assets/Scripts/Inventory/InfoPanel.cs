@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Inventory
 {
     public class InfoPanel : MonoBehaviour
     {
-        private string _itemID;
-        private int _rarity;
-        
+        [SerializeField] private Text _textID;
+        [SerializeField] private Text _textRarity;
+
+        public void SetValues(string itemID, int rarity)
+        {
+            _textID.text = itemID;
+            _textRarity.text = rarity.ToString();
+        }
     }
 }
