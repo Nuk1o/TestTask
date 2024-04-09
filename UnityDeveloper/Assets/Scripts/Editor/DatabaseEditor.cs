@@ -1,6 +1,7 @@
 using Mono.Data.Sqlite;
 using UnityEngine;
 using UnityEditor;
+using Runtime = Wigro.Runtime;
 
 namespace Wigro.Editor
 {
@@ -19,26 +20,28 @@ namespace Wigro.Editor
                 if ( guids.Length > 0 )
                 {
                     var settingsPath = AssetDatabase.GUIDToAssetPath( guids[ 0 ] );
-
                     settings = AssetDatabase.LoadAssetAtPath<Runtime.Settings>( settingsPath );
                 }
                 else
                 {
                     // В случае, если конфиг не найден нужно дополнить код созданием данного конфига по пути "Assets/Resources/Settings.asset"
                     // После создания сказать об этом в консоль и перевести фокус на него в редакторе, а этот метод благополучно завершить.
-
+                    Runtime.Settings settingsAsset = ScriptableObject.CreateInstance<Runtime.Settings>();
+                    string pathSettings = "Assets/Resources/Settings.asset";
+                    AssetDatabase.CreateAsset(settingsAsset, pathSettings);
+                    AssetDatabase.Refresh();
+                    AssetDatabase.SaveAssets();
+                    Debug.Log($"[Settings.asset] успешно создан! -> {pathSettings}");
+                    EditorUtility.FocusProjectWindow();
+                    Selection.activeObject = settingsAsset;
                     return;
                 }
-
                 string sourceFolder = AssetDatabase.GetAssetPath( settings.folder );
                 if ( string.IsNullOrEmpty( sourceFolder ) )
                     return;
-
                 var assetPath = System.IO.Path.Combine( sourceFolder, "items.bytes" );
-
                 SqliteConnection _sqliteConnection = new( $"URI=file:{assetPath}" );
                 await _sqliteConnection.OpenAsync();
-
                 SqliteCommand command = _sqliteConnection.CreateCommand();
                 command.CommandType = System.Data.CommandType.Text;
                 command.CommandText = $"CREATE TABLE IF NOT EXISTS {TableName} (" +
