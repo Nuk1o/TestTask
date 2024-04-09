@@ -33,6 +33,7 @@ namespace Inventory.Animations
         {
             Debug.Log(settings.OpenAnimated);
             Debug.Log(settings.CloseAnimated);
+            _inventoryCanvas.gameObject.SetActive(false);
             _inventoryCanvas.gameObject.SetActive(true);
             _inventoryAnimator.enabled = true;
             _openInventoryBtn.interactable = false;
