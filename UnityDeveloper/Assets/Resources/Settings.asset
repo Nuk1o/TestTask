@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   _folder: {fileID: 102900000, guid: d7c26643cd4d47e49afa37a08b22ce11, type: 3}
-  _amount: 10
-  _flags: 7
+  _amount: 14
+  _flags: 4
